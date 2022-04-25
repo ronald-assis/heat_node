@@ -1,9 +1,27 @@
 import 'dotenv/config';
 import express from 'express';
 import { router } from './routes';
+import { Server } from 'socket.io'
+import http from 'http';
+import cors from 'cors';
+
+
+const PORT = 3001;
 
 const app = express();
-const PORT = 3001;
+app.use(cors())
+
+const serverHttp = http.createServer(app);
+
+const io = new Server(serverHttp, {
+  cors: {
+    origin: "*"
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log(`User connected in the socket ${socket}`)
+} )
 
 app.use(express.json());
 
@@ -21,4 +39,4 @@ app.get('/signin/callback', (req, res) => {
 
 app.use(router);
 
-app.listen(PORT, () => console.log(`:rocket Running at http://localhost:${PORT}`));
+serverHttp.listen(PORT, () => console.log(`:rocket Running at http://localhost:${PORT}`));
