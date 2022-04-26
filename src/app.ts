@@ -6,21 +6,21 @@ import http from 'http';
 import cors from 'cors';
 
 
-const PORT = 3001;
+export const PORT = 3001;
 
 const app = express();
 app.use(cors())
 
-const serverHttp = http.createServer(app);
+export const serverHttp = http.createServer(app);
 
-const io = new Server(serverHttp, {
+export const io = new Server(serverHttp, {
   cors: {
     origin: "*"
   }
 });
 
-io.on("connection", (socket) => {
-  console.log(`User connected in the socket ${socket}`)
+ io.on("connection", (socket) => {
+  console.log(`User connected in the socket ${socket.id}`)
 } )
 
 app.use(express.json());
@@ -38,5 +38,3 @@ app.get('/signin/callback', (req, res) => {
 })
 
 app.use(router);
-
-serverHttp.listen(PORT, () => console.log(`:rocket Running at http://localhost:${PORT}`));
