@@ -11,7 +11,7 @@ router.post('/authenticate', new AuthenticateUserController().handle)
 
 router
   .post('/messages', ensureAuthentication,new CreatedMessageController().handle)
-  .get('/messages', new GetLast3MessagesController().handle)
+  .get('/messages/lastThree', new GetLast3MessagesController().handle)
 
 
 
